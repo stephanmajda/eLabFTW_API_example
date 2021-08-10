@@ -5,10 +5,12 @@ from datetime import date
 import os
 
 # Put YOUR variables here:
-# the annotation file should be a Excel file (.xlsx or +.xls format)
-annotation_file = os.path.abspath("C:\\Users\\\Default\\Documents\\RDM4mic.xlsx")
+# the annotation file should be a Excel file (.xlsx or +.xls format, e.g. "C:\\Users\\\Default\\Documents\\RDM4mic.xlsx")
+annotation_file = os.path.abspath("Annotation_example.xlsx")
 # replace the token with your generated API key, which is only showed once!
 my_token = "b4af0c08363734890f1811436a1c7d6355d6a9e8d0923f77cd4f3c4a062db09093adfaa3c79e574520cc"
+# the title of your new database
+new_title = "API_example"
 
 
 
@@ -42,7 +44,7 @@ def read_annotation(annotation_file,id,manager):
     #     print(dict_from_file)
     return dict_from_file
 
-def update_database(manager, id,csv_dict_import):
+def update_database(manager, id,csv_dict_import,new_title):
     # put the imported file in the body of an eLabFTW database
     body_text = ""
     for key in csv_dict_import:
@@ -56,7 +58,7 @@ def update_database(manager, id,csv_dict_import):
             i+=1
         body_text = body_text + "<br>\n"
     today = date.today().strftime("%Y%m%d")
-    params = {"title": "Metaannotation upload","date": today, "body": body_text}
+    params = {"title": new_title,"date": today, "body": body_text}
     print(manager.post_item(id, params))
 
 if __name__ == '__main__':
@@ -68,7 +70,7 @@ if __name__ == '__main__':
     elab_items_demo(manager)
     id = elab_create_database(manager)
     csv_dict_import = read_annotation(annotation_file,id,manager)
-    update_database(manager, id, csv_dict_import)
+    update_database(manager, id, csv_dict_import, new_title)
 
 
 
